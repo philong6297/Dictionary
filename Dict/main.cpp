@@ -1,5 +1,4 @@
-#include "Index.h"
+#include "dict.h"
 int main() {
-	dict::Index a(1, 2);
-	a.
+
 }

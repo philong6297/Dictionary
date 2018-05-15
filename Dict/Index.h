@@ -2,14 +2,49 @@
 #define _INDEX_H
 #pragma once
 #include "definitions.h"
-#include <memory>
-#include <utility>
-class dict::Index final : private std::pair<size_t, size_t> {
-  public:
-	using std::pair<size_t, size_t>::pair;
+namespace dict {
+	constexpr Index make_index(size_t&& offset, size_t&& length);
+}
+class dict::Index final {
+public:
+	size_t offset_;
+	size_t length_;
+
+public:
+	// Default constructor. Value-initializes both elements of the pair, first and second.
+	constexpr Index();
+
+	// Initializes offset and length
+	constexpr Index(const size_t& offset, const size_t& length);
+
+	// Initializes move offset and length
+	constexpr Index(size_t&& offset, size_t&& lenght);
+
+	// Copy constructor is defaulted, and is constexpr if copying of both elements satisfies the
+	// requirements on constexpr functions.
+	constexpr Index(const Index& other) = default;
+
+	// Move constructor is defaulted, and is constexpr if moving of both elements satisfies the
+	// requirements on constexpr functions.
+	constexpr Index(Index&& other) = default;
+
+	// destructor is defaulted
 	~Index() = default;
-	auto offsetRead() -> std::unique_ptr<size_t>;
-	auto lengthRead() -> std::unique_ptr<size_t>;
-	constexpr auto make_index(size_t&& offset, size_t&& length) -> std::pair<size_t, size_t>;
+
+public:
+	// copy assignment
+	Index& operator=(const Index& other);
+	// move assignment
+	Index& operator=(Index&& other) noexcept;
+	// swap data
+	void swap(Index& other) noexcept;
+	// swap value using bitwise
+	inline void xor_swap(size_t& a, size_t& b);
 };
+constexpr bool operator<(const dict::Index& left, const dict::Index& right);
+constexpr bool operator==(const dict::Index& left, const dict::Index& right);
+constexpr bool operator!=(const dict::Index& left, const dict::Index& right);
+constexpr bool operator>=(const dict::Index& left, const dict::Index& right);
+constexpr bool operator<=(const dict::Index& left, const dict::Index& right);
+constexpr bool operator>(const dict::Index& left, const dict::Index& right);
 #endif    // !_INDEX_H
