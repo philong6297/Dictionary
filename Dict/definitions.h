@@ -10,5 +10,5 @@ namespace dict {
 	class Interface;
 	class Index;
 	class UnorderedMap;
-}    // namespace dict
-#endif    // !_DEFINITIONS_H
+} // namespace dict
+#endif // !_DEFINITIONS_H
